@@ -81,3 +81,4 @@ if ($stmt->execute()) {
 $stmt->close();
 $conn->close();
 ?>
+<form action="procesar_registro.php" method="POST">

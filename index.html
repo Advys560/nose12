@@ -239,6 +239,12 @@
   <button class="cerrar-sesion" onclick="window.location.href='sesion.html'">X</button>
   <div class="logo">EduPath</div>
   <div class="mi-div">
+    <h2 style="text-align: center;">Formulario de Registro</h2>
+    <form id="registroForm">
+      <input type="text" id="nombre" placeholder="Nombre" required />
+      <input type="email" id="correo" placeholder="Correo electrónico" required />
+      <button type="submit">Registrar</button>
+    </form>
     <h3>Institución Educativa</h3>
     <div class="mi-div">
       <ul>
@@ -312,93 +318,6 @@
         <th><button>Novedades</button></th>
       </tr>
     </table>
-    <script>
-      function mostrarMensaje(mensaje) {
-        // Elimina cualquier mensaje anterior
-        const existente = document.getElementById('mensaje-profesor');
-        if (existente) existente.remove();
-
-        // Crea el contenedor del mensaje
-        const div = document.createElement('div');
-        div.id = 'mensaje-profesor';
-        div.innerText = mensaje;
-        div.style.position = 'fixed';
-        div.style.top = '50%';
-        div.style.left = '50%';
-        div.style.transform = 'translate(-50%, -50%)';
-        div.style.background = 'rgba(255,255,255,0.97)';
-        div.style.color = '#111';
-        div.style.padding = '32px 40px';
-        div.style.borderRadius = '16px';
-        div.style.boxShadow = '0 4px 15px rgba(0,0,0,0.15)';
-        div.style.fontFamily = "'Roboto', sans-serif";
-        div.style.fontSize = '1.2em';
-        div.style.zIndex = '9999';
-        div.style.textAlign = 'center';
-
-        // Botón para cerrar el mensaje
-        const btn = document.createElement('button');
-        btn.innerText = 'Cerrar';
-        btn.style.marginTop = '20px';
-        btn.style.padding = '8px 24px';
-        btn.style.borderRadius = '25px';
-        btn.style.border = 'none';
-        btn.style.background = '#111';
-        btn.style.color = '#fff';
-        btn.style.fontSize = '1em';
-        btn.style.cursor = 'pointer';
-        btn.onclick = () => div.remove();
-
-        div.appendChild(document.createElement('br'));
-        div.appendChild(btn);
-
-        document.body.appendChild(div);
-      }
-
-      function leerBusquedaProfesor() {
-        const profesores = ["aureliano palacio", "sergio guerra", "nelson uribe"];
-        const diasDisponibles = ["lunes", "jueves", "viernes"];
-
-        const valor = document.getElementById('busqueda-profesor').value.trim().toLowerCase();
-
-        // Obtener el día actual en español
-        const diasSemana = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
-        const hoy = new Date();
-        const diaActual = diasSemana[hoy.getDay()];
-
-        let mensaje = "";
-        if (profesores.includes(valor)) {
-          if (diasDisponibles.includes(diaActual)) {
-            mensaje = "El profesor <b>" + valor.charAt(0).toUpperCase() + valor.slice(1) + "</b> está disponible hoy (<b>" + diaActual + "</b>).";
-          } else {
-            mensaje = "El profesor <b>" + valor.charAt(0).toUpperCase() + valor.slice(1) + "</b> <br>no está disponible hoy (<b>" + diaActual + "</b>).";
-          }
-        } else {
-          mensaje = "Profesor no encontrado o no tiene disponibilidad registrada.";
-        }
-        mostrarMensaje(mensaje);
-      }
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-      // Inicializando Supabase con los datos proporcionados
-      const supabaseUrl = 'https://varxmetzsabmtfsarujf.supabase.co';
-      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhcnhtZXR6c2FibXRmc2FydWpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzMDQwNzQsImV4cCI6MjA2ODg4MDA3NH0.EUkx4lmvG5yCYiR1eTZp-LUe8U_PjppR79n--z2n5tg';
-
-      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-      async function getUsers() {
-        let { data, error } = await supabase.from('usuarios').select('*');
-        if (error) {
-          console.error('Error al obtener usuarios:', error);
-        } else {
-          console.log('Usuarios:', data);
-        }
-      }
-
-      // Llama la función para probar la conexión
-      getUsers();
-    </script>
     <table>
       <tr>
         <td>
@@ -407,5 +326,105 @@
       </tr>
     </table>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // Inicializa Supabase solo una vez
+    const SUPABASE_URL = 'https://varxmetzsabmtfsarujf.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhcnhtZXR6c2FibXRmc2FydWpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzMDQwNzQsImV4cCI6MjA2ODg4MDA3NH0.EUkx4lmvG5yCYiR1eTZp-LUe8U_PjppR79n--z2n5tg';
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Formulario de registro
+    const form = document.getElementById('registroForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nombre = document.getElementById('nombre').value;
+      const correo = document.getElementById('correo').value;
+
+      const { data, error } = await supabase
+        .from('usuarios')
+        .insert([{ nombre: nombre, correo: correo }]);
+
+      if (error) {
+        alert('❌ Error al registrar: ' + error.message);
+        console.error(error);
+      } else {
+        alert('✅ Usuario registrado correctamente');
+        form.reset();
+      }
+    });
+
+    // Función para mostrar mensajes de búsqueda de profesor
+    function mostrarMensaje(mensaje) {
+      const existente = document.getElementById('mensaje-profesor');
+      if (existente) existente.remove();
+
+      const div = document.createElement('div');
+      div.id = 'mensaje-profesor';
+      div.innerHTML = mensaje;
+      div.style.position = 'fixed';
+      div.style.top = '50%';
+      div.style.left = '50%';
+      div.style.transform = 'translate(-50%, -50%)';
+      div.style.background = 'rgba(255,255,255,0.97)';
+      div.style.color = '#111';
+      div.style.padding = '32px 40px';
+      div.style.borderRadius = '16px';
+      div.style.boxShadow = '0 4px 15px rgba(0,0,0,0.15)';
+      div.style.fontFamily = "'Roboto', sans-serif";
+      div.style.fontSize = '1.2em';
+      div.style.zIndex = '9999';
+      div.style.textAlign = 'center';
+
+      const btn = document.createElement('button');
+      btn.innerText = 'Cerrar';
+      btn.style.marginTop = '20px';
+      btn.style.padding = '8px 24px';
+      btn.style.borderRadius = '25px';
+      btn.style.border = 'none';
+      btn.style.background = '#111';
+      btn.style.color = '#fff';
+      btn.style.fontSize = '1em';
+      btn.style.cursor = 'pointer';
+      btn.onclick = () => div.remove();
+
+      div.appendChild(document.createElement('br'));
+      div.appendChild(btn);
+
+      document.body.appendChild(div);
+    }
+
+    // Función de búsqueda de profesor
+    function leerBusquedaProfesor() {
+      const profesores = ["aureliano palacio", "sergio guerra", "nelson uribe"];
+      const diasDisponibles = ["lunes", "jueves", "viernes"];
+      const valor = document.getElementById('busqueda-profesor').value.trim().toLowerCase();
+      const diasSemana = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+      const hoy = new Date();
+      const diaActual = diasSemana[hoy.getDay()];
+
+      let mensaje = "";
+      if (profesores.includes(valor)) {
+        if (diasDisponibles.includes(diaActual)) {
+          mensaje = "El profesor <b>" + valor.charAt(0).toUpperCase() + valor.slice(1) + "</b> está disponible hoy (<b>" + diaActual + "</b>).";
+        } else {
+          mensaje = "El profesor <b>" + valor.charAt(0).toUpperCase() + valor.slice(1) + "</b> <br>no está disponible hoy (<b>" + diaActual + "</b>).";
+        }
+      } else {
+        mensaje = "Profesor no encontrado o no tiene disponibilidad registrada.";
+      }
+      mostrarMensaje(mensaje);
+    }
+
+    // Ejemplo: obtener usuarios (puedes eliminar si no lo usas)
+    async function getUsers() {
+      let { data, error } = await supabase.from('usuarios').select('*');
+      if (error) {
+        console.error('Error al obtener usuarios:', error);
+      } else {
+        console.log('Usuarios:', data);
+      }
+    }
+    // getUsers(); // Descomenta si quieres probar la consulta
+  </script>
 </body>
 </html>
