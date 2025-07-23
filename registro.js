@@ -1,47 +1,50 @@
-const supabaseUrl = 'https://xxx.supabase.co'; // reemplaza con tu URL real
-const supabaseKey = 'public-anon-key'; // reemplaza con tu clave real
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+const SUPABASE_URL = 'https://varxmetzsabmtfsarujf.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhcnhtZXR6c2FibXRmc2FydWpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzMDQwNzQsImV4cCI6MjA2ODg4MDA3NH0.EUkx4lmvG5yCYiR1eTZp-LUe8U_PjppR79n--z2n5tg';
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-document.getElementById('registerForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
+const form = document.getElementById('registerForm');
+const usuarioInput = document.getElementById('nombre');
+const correoInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const confirmInput = document.getElementById('confirmPassword');
+const confirmError = document.getElementById('confirmError');
+const registroError = document.getElementById('registroError');
+const registroExito = document.getElementById('registroExito');
 
-  const nombre = document.getElementById('nombre').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
-  const confirmPassword = document.getElementById('confirmPassword').value;
-  const confirmError = document.getElementById('confirmError');
-  const registroError = document.getElementById('registroError');
-  const registroExito = document.getElementById('registroExito');
-
-  confirmError.style.display = 'none';
+form.addEventListener('submit', async function(event) {
+  event.preventDefault();
   registroError.style.display = 'none';
   registroExito.style.display = 'none';
+  confirmError.style.display = 'none';
 
-  if (password !== confirmPassword) {
+  // Validación de contraseñas
+  if (passwordInput.value !== confirmInput.value) {
     confirmError.style.display = 'block';
     return;
   }
 
-  try {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { nombre }
-      }
-    });
-
-    if (error) {
-      registroError.textContent = error.message;
-      registroError.style.display = 'block';
-    } else {
-      registroExito.textContent = 'Registro exitoso. Revisa tu correo para verificar la cuenta.';
-      registroExito.style.display = 'block';
-      document.getElementById('registerForm').reset();
-    }
-  } catch (err) {
-    registroError.textContent = 'Ocurrió un error inesperado.';
+  // Validación básica de campos
+  if (!usuarioInput.value || !correoInput.value || !passwordInput.value) {
+    registroError.textContent = 'Todos los campos son obligatorios.';
     registroError.style.display = 'block';
-    console.error(err);
+    return;
+  }
+
+  // Insertar usuario en Supabase
+  const { data, error } = await supabase
+    .from('usuarios')
+    .insert([{
+      usuario: usuarioInput.value,
+      correo: correoInput.value,
+      contraseña: passwordInput.value
+    }]);
+
+  if (error) {
+    registroError.textContent = '❌ Error al registrar: ' + error.message;
+    registroError.style.display = 'block';
+  } else {
+    registroExito.textContent = '✅ Usuario registrado correctamente';
+    registroExito.style.display = 'block';
+    form.reset();
   }
 });
