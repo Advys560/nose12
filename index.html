@@ -2,70 +2,131 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Inicio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #eef2f5;
-      margin: 0;
-      padding: 0;
+      background-color: #f2f2f2;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      justify-content: start;
-      min-height: 100vh;
+      height: 100vh;
+      margin: 0;
     }
 
-    .mensaje-exito {
-      background-color: #d4edda;
-      color: #155724;
-      padding: 15px 20px;
-      border-radius: 8px;
-      border: 1px solid #c3e6cb;
-      margin-top: 30px;
-      text-align: center;
-      font-size: 16px;
+    .register-form {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #2980b9;
+    }
+
+    .error-message {
+      color: red;
       display: none;
-      max-width: 90%;
+      margin-top: 10px;
+      font-size: 14px;
     }
 
-    .contenido {
-      margin-top: 50px;
+    .success-message {
+      color: #155724;
+      background-color: #d4edda;
+      padding: 10px;
+      margin-top: 15px;
+      border-radius: 5px;
+      font-size: 15px;
+      display: none;
       text-align: center;
-    }
-
-    h1 {
-      color: #333;
-    }
-
-    p {
-      color: #555;
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
-  <div id="mensaje" class="mensaje-exito">
-    ¡Registro exitoso! Ya puedes iniciar sesión.
-  </div>
-
-  <div class="contenido">
-    <h1>Bienvenido a la página principal</h1>
-    <p>Gracias por registrarte. Disfruta de la experiencia.</p>
+  <div class="register-form">
+    <h1>Registro</h1>
+    <form id="registerForm" autocomplete="off">
+      <input type="text" id="nombre" name="nombre" placeholder="Usuario" required>
+      <input type="email" id="email" name="email" placeholder="Correo electrónico" required>
+      <input type="password" id="password" name="password" placeholder="Contraseña" required>
+      <input type="password" id="confirmPassword" name="confirm_password" placeholder="Confirmar contraseña" required>
+      <input class="btn" type="submit" value="Registrarse">
+      <div id="registroError" class="error-message"></div>
+      <div id="registroExito" class="success-message">¡Registro exitoso!</div>
+    </form>
   </div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('registro') === 'exito') {
-      document.getElementById('mensaje').style.display = 'block';
+    const supabaseUrl = 'https://[TU_URL].supabase.co'; // Reemplaza con tu URL de Supabase
+    const supabaseKey = '[TU_KEY_PUBLICA]'; // Reemplaza con tu key pública
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-      // Opcional: eliminar el parámetro de la URL después de 3 segundos
-      setTimeout(() => {
-        const url = new URL(window.location);
-        url.searchParams.delete('registro');
-        window.history.replaceState({}, document.title, url.pathname);
-      }, 3000);
-    }
+    const form = document.getElementById('registerForm');
+    const errorDiv = document.getElementById('registroError');
+    const successDiv = document.getElementById('registroExito');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const nombre = document.getElementById('nombre').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (password !== confirmPassword) {
+        errorDiv.textContent = 'Las contraseñas no coinciden.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      // Registro con Supabase
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+          data: {
+            nombre: nombre
+          }
+        }
+      });
+
+      if (error) {
+        errorDiv.textContent = error.message;
+        errorDiv.style.display = 'block';
+        successDiv.style.display = 'none';
+      } else {
+        errorDiv.style.display = 'none';
+        successDiv.style.display = 'block';
+        form.reset(); // Limpia los campos
+      }
+    });
   </script>
 </body>
 </html>
