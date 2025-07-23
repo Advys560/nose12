@@ -2,100 +2,70 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <title>Inicio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registro</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
+      background-color: #eef2f5;
       margin: 0;
       padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      min-height: 100vh;
     }
 
-    .register-form {
-      width: 100%;
-      max-width: 400px;
-      margin: 50px auto;
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .register-form h1 {
+    .mensaje-exito {
+      background-color: #d4edda;
+      color: #155724;
+      padding: 15px 20px;
+      border-radius: 8px;
+      border: 1px solid #c3e6cb;
+      margin-top: 30px;
       text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .register-form input[type="text"],
-    .register-form input[type="email"],
-    .register-form input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
-
-    .register-form .btn {
-      width: 100%;
-      padding: 10px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
       font-size: 16px;
-    }
-
-    .register-form .btn:hover {
-      background-color: #0056b3;
-    }
-
-    .error-message {
       display: none;
-      color: red;
-      font-size: 14px;
-      margin-top: -10px;
+      max-width: 90%;
     }
 
-    .login-link {
+    .contenido {
+      margin-top: 50px;
       text-align: center;
-      margin-top: 15px;
     }
 
-    .login-link a {
-      color: #007bff;
-      text-decoration: none;
+    h1 {
+      color: #333;
     }
 
-    .login-link a:hover {
-      text-decoration: underline;
+    p {
+      color: #555;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script defer src="registro.js"></script>
 </head>
 <body>
-  <div class="register-form">
-    <h1>Registro</h1>
-    <form id="registerForm" autocomplete="off">
-      <input type="text" id="nombre" name="nombre" placeholder="Usuario" required>
-      <input type="email" id="email" name="email" placeholder="Correo electrónico" required>
-      <input type="password" id="password" name="password" placeholder="Contraseña" required>
-      <input type="password" id="confirmPassword" name="confirm_password" placeholder="Confirmar contraseña" required>
-
-      <input class="btn" type="submit" value="Registrarse">
-
-      <div id="confirmError" class="error-message">Las contraseñas no coinciden.</div>
-      <div id="registroError" class="error-message"></div>
-      <div id="registroExito" style="display:none;color:#4CAF50;background:#002a00;padding:10px;border-radius:5px;margin-top:10px;text-align:center;font-size:15px;"></div>
-
-      <div class="login-link">
-        ¿Ya tienes una cuenta? <a href="sesion.html">Iniciar sesión</a>
-      </div>
-    </form>
+  <div id="mensaje" class="mensaje-exito">
+    ¡Registro exitoso! Ya puedes iniciar sesión.
   </div>
+
+  <div class="contenido">
+    <h1>Bienvenido a la página principal</h1>
+    <p>Gracias por registrarte. Disfruta de la experiencia.</p>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('registro') === 'exito') {
+      document.getElementById('mensaje').style.display = 'block';
+
+      // Opcional: eliminar el parámetro de la URL después de 3 segundos
+      setTimeout(() => {
+        const url = new URL(window.location);
+        url.searchParams.delete('registro');
+        window.history.replaceState({}, document.title, url.pathname);
+      }, 3000);
+    }
+  </script>
 </body>
 </html>
