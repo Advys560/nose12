@@ -379,6 +379,26 @@
         mostrarMensaje(mensaje);
       }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      // Inicializando Supabase con los datos proporcionados
+      const supabaseUrl = 'https://varxmetzsabmtfsarujf.supabase.co';
+      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhcnhtZXR6c2FibXRmc2FydWpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzMDQwNzQsImV4cCI6MjA2ODg4MDA3NH0.EUkx4lmvG5yCYiR1eTZp-LUe8U_PjppR79n--z2n5tg';
+
+      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+      async function getUsers() {
+        let { data, error } = await supabase.from('usuarios').select('*');
+        if (error) {
+          console.error('Error al obtener usuarios:', error);
+        } else {
+          console.log('Usuarios:', data);
+        }
+      }
+
+      // Llama la función para probar la conexión
+      getUsers();
+    </script>
     <table>
       <tr>
         <td>
