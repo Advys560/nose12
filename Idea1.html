@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>EduPath</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #111111;
+      --secondary-color: #222222;
+      --background-gradient: linear-gradient(135deg, #ffffff 0%, #222222 100%);
+      --text-color: #111111;
+      --light-text-color: #222222;
+      --white-color: #ffffff;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+      --transition-speed: 0.3s;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--background-gradient);
+      color: var(--text-color);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 3em;
+      color: var(--white-color);
+      text-align: center;
+      margin: 20px 0;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      animation: fadeInDown 1s ease-out;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    h3 {
+      color: var(--light-text-color);
+      font-weight: 500;
+      margin-bottom: 30px;
+    }
+
+    .mi-div {
+      padding: 30px;
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      box-shadow: 0 4px 15px var(--shadow-color);
+    }
+
+    .mi-div ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .mi-div > ul > li {
+      margin: 10px;
+      position: relative;
+    }
+
+    .mi-div ul li a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      padding: 12px 20px;
+      border-radius: 25px;
+      transition: all var(--transition-speed) ease;
+      display: block;
+      background-color: var(--white-color);
+      box-shadow: 0 2px 5px var(--shadow-color);
+    }
+
+    .mi-div ul li a:hover {
+      background-color: var(--primary-color);
+      color: var(--white-color);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px var(--shadow-color);
+    }
+
+    .mi-div ul li ul {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 100%;
+      background-color: var(--white-color);
+      border-radius: 10px;
+      box-shadow: 0 4px 10px var(--shadow-color);
+      z-index: 10;
+      width: 220px;
+      padding: 10px 0;
+    }
+
+    .mi-div ul li:hover > ul {
+      display: block;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    .mi-div ul li ul li {
+      padding: 0;
+    }
+
+    .mi-div ul li ul li a {
+      padding: 8px 20px;
+      color: var(--text-color);
+      display: block;
+      transition: background-color var(--transition-speed) ease;
+    }
+
+    .mi-div ul li ul li:hover > a {
+      background-color: rgba(17, 17, 17, 0.1);
+      color: var(--primary-color);
+    }
+
+    .mi-div ul li ul li ul {
+      padding-left: 15px;
+      background-color: rgba(17, 17, 17, 0.05);
+      border-radius: 0 0 10px 10px;
+    }
+
+    table {
+      width: 90%;
+      max-width: 1000px;
+      margin: 20px auto;
+      background-color: var(--white-color);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px var(--shadow-color);
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: center;
+      color: var(--text-color);
+      border-bottom: 1px solid #dddddd;
+    }
+
+    th {
+      background-color: var(--white-color); /* Fondo blanco */
+      color: var(--text-color) !important;  /* Texto negro */
+      padding-top: 8px;
+      padding-bottom: 8px;
+      height: 40px;
+      font-size: 1.1em;
+      vertical-align: middle;
+      border-bottom: 1px solid #dddddd;
+    }
+
+    button {
+      padding: 12px 25px;
+      background-color: var(--secondary-color);
+      color: var(--white-color);
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all var(--transition-speed) ease;
+      display: block;
+      margin: 20px auto;
+      box-shadow: 0 2px 5px var(--shadow-color);
+    }
+
+    button a {
+      color: #ffffff !important;
+      text-decoration: none !important;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    button:hover {
+      background-color: #000000;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px var(--shadow-color);
+    }
+
+    .cerrar-sesion {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      width: 30px;
+      height: 30px;
+      font-size: 15px;
+      background: #ff4d4d;
+      color: var(--white-color);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 1000;
+      padding: 0;
+      line-height: 30px;
+      text-align: center;
+      transition: background-color var(--transition-speed) ease;
+      box-shadow: 0 2px 5px var(--shadow-color);
+    }
+
+    .cerrar-sesion:hover {
+      background: #d11a2a;
+    }
+
+    @media (max-width: 768px) {
+      .mi-div ul {
+        flex-direction: column;
+        align-items: center;
+      }
+      .mi-div > ul > li {
+        width: 100%;
+        text-align: center;
+        margin: 5px 0;
+      }
+      .mi-div ul li ul {
+        position: static;
+        width: 100%;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button class="cerrar-sesion" onclick="window.location.href='sesion.html'">X</button>
+  <div class="logo">EduPath</div>
+  <div class="mi-div">
+    <h2 style="text-align: center;">Formulario de Registro</h2>
+    <form id="registroForm">
+      <input type="text" id="nombre" placeholder="Nombre" required />
+      <input type="email" id="correo" placeholder="Correo electrónico" required />
+      <button type="submit">Registrar</button>
+    </form>
+    <h3>Institución Educativa</h3>
+    <div class="mi-div">
+      <ul>
+        <li><a href="#">Inicio</a></li>
+        <li><a href="#">Institución</a>
+          <ul>
+            <li><a href="#">Convenio</a></li>
+            <li><a href="#">F.S.E</a></li>
+            <li><a href="#">Símbolos institucionales</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Departamentos</a>
+          <ul>
+            <li><a href="#">Artes</a>
+              <ul>
+                <li><a href="#">Artes plásticas</a></li>
+                <li><a href="#">Música</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Académica</a>
+              <ul>
+                <li><a href="#">Humanidades (Comunicación y Medios)</a></li>
+                <li><a href="#">Humanidades (Inglés)</a></li>
+                <li><a href="#">Ciencias y Matemáticas</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Procesos Matemáticos</a></li>
+            <li><a href="#">Química Industrial</a></li>
+            <li><a href="#">Programación</a></li>
+            <li><a href="#">Sistemas</a></li>
+            <li><a href="#">Deportes</a></li>
+            <li><a href="#">Comercial</a>
+              <ul>
+                <li><a href="#">Administración</a></li>
+                <li><a href="#">Contabilidad</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Industrial</a>
+              <ul>
+                <li><a href="#">Construcciones civiles</a></li>
+                <li><a href="#">Electrónica</a></li>
+                <li><a href="#">Diseño de modas</a></li>
+                <li><a href="#">Energía solar fotovoltaica</a></li>
+                <li><a href="#">Automatización industrial</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Promoción social</a>
+              <ul>
+                <li><a href="#">Gestión social</a></li>
+                <li><a href="#">Gastronomía</a></li>
+                <li><a href="#">Recursos humanos</a></li>
+                <li><a href="#">Atención a primera infancia</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#">Noticias</a></li>
+        <li><a href="#">Unidades</a></li>
+      </ul>
+    </div>
+    <table>
+      <tr>
+        <th>
+          <div style="display: flex; align-items: center; justify-content: center;">
+            <input id="busqueda-profesor" type="text" placeholder="¿Que profesor buscas?" style="width:40%;padding:4px;border-radius:4px;border:1px solid #ccc;">
+            <button type="button" style="margin-left:4px;padding:4px 8px;border-radius:4px;border:none;background:#111;color:#fff;cursor:pointer;"
+              onclick="leerBusquedaProfesor()">Buscar</button>
+          </div>
+        </th>
+        <th><button>Horarios</button></th>
+        <th><button>Novedades</button></th>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td>
+          <button><a href="frm.html">CONTÁCTANOS</a></button>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // Inicializa Supabase solo una vez
+    const SUPABASE_URL = 'https://varxmetzsabmtfsarujf.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhcnhtZXR6c2FibXRmc2FydWpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzMDQwNzQsImV4cCI6MjA2ODg4MDA3NH0.EUkx4lmvG5yCYiR1eTZp-LUe8U_PjppR79n--z2n5tg';
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Formulario de registro
+    const form = document.getElementById('registroForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nombre = document.getElementById('nombre').value;
+      const correo = document.getElementById('correo').value;
+
+      const { data, error } = await supabase
+        .from('usuarios')
+        .insert([{ nombre: nombre, correo: correo }]);
+
+      if (error) {
+        alert('❌ Error al registrar: ' + error.message);
+        console.error(error);
+      } else {
+        alert('✅ Usuario registrado correctamente');
+        form.reset();
+      }
+    });
+
+    // Función para mostrar mensajes de búsqueda de profesor
+    function mostrarMensaje(mensaje) {
+      const existente = document.getElementById('mensaje-profesor');
+      if (existente) existente.remove();
+
+      const div = document.createElement('div');
+      div.id = 'mensaje-profesor';
+      div.innerHTML = mensaje;
+      div.style.position = 'fixed';
+      div.style.top = '50%';
+      div.style.left = '50%';
+      div.style.transform = 'translate(-50%, -50%)';
+      div.style.background = 'rgba(255,255,255,0.97)';
+      div.style.color = '#111';
+      div.style.padding = '32px 40px';
+      div.style.borderRadius = '16px';
+      div.style.boxShadow = '0 4px 15px rgba(0,0,0,0.15)';
+      div.style.fontFamily = "'Roboto', sans-serif";
+      div.style.fontSize = '1.2em';
+      div.style.zIndex = '9999';
+      div.style.textAlign = 'center';
+
+      const btn = document.createElement('button');
+      btn.innerText = 'Cerrar';
+      btn.style.marginTop = '20px';
+      btn.style.padding = '8px 24px';
+      btn.style.borderRadius = '25px';
+      btn.style.border = 'none';
+      btn.style.background = '#111';
+      btn.style.color = '#fff';
+      btn.style.fontSize = '1em';
+      btn.style.cursor = 'pointer';
+      btn.onclick = () => div.remove();
+
+      div.appendChild(document.createElement('br'));
+      div.appendChild(btn);
+
+      document.body.appendChild(div);
+    }
+
+    // Función de búsqueda de profesor
+    function leerBusquedaProfesor() {
+      const profesores = ["aureliano palacio", "sergio guerra", "nelson uribe"];
+      const diasDisponibles = ["lunes", "jueves", "viernes"];
+      const valor = document.getElementById('busqueda-profesor').value.trim().toLowerCase();
+      const diasSemana = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+      const hoy = new Date();
+      const diaActual = diasSemana[hoy.getDay()];
+
+      let mensaje = "";
+      if (profesores.includes(valor)) {
+        if (diasDisponibles.includes(diaActual)) {
+          mensaje = "El profesor <b>" + valor.charAt(0).toUpperCase() + valor.slice(1) + "</b> está disponible hoy (<b>" + diaActual + "</b>).";
+        } else {
+          mensaje = "El profesor <b>" + valor.charAt(0).toUpperCase() + valor.slice(1) + "</b> <br>no está disponible hoy (<b>" + diaActual + "</b>).";
+        }
+      } else {
+        mensaje = "Profesor no encontrado o no tiene disponibilidad registrada.";
+      }
+      mostrarMensaje(mensaje);
+    }
+
+    // Ejemplo: obtener usuarios (puedes eliminar si no lo usas)
+    async function getUsers() {
+      let { data, error } = await supabase.from('usuarios').select('*');
+      if (error) {
+        console.error('Error al obtener usuarios:', error);
+      } else {
+        console.log('Usuarios:', data);
+      }
+    }
+    // getUsers(); // Descomenta si quieres probar la consulta
+  </script>
+</body>
+</html>
