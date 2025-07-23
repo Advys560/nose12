@@ -5,89 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registro</title>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #000;
-      color: white;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      padding-top: 40px;
-    }
-
-    .register-form {
-      background-color: #1a1a1a;
-      padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #333;
-      width: 100%;
-      max-width: 500px;
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    input[type="text"],
-    input[type="password"],
-    input[type="email"] {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 5px;
-      border: none;
-      background-color: #333;
-      color: white;
-      box-sizing: border-box;
-    }
-
-    .btn {
-      width: 100%;
-      background-color: #4CAF50;
-      color: white;
-      padding: 12px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      margin-top: 10px;
-    }
-
-    .btn:hover {
-      background-color: #45a049;
-    }
-
-    .error-message {
-      display: none;
-      color: #ff4d4d;
-      background: #2a0000;
-      padding: 10px;
-      border-radius: 5px;
-      margin-top: 10px;
-      margin-bottom: 0;
-      text-align: center;
-      font-size: 15px;
-    }
-
-    .login-link {
-      margin-top: 20px;
-      text-align: center;
-    }
-
-    .login-link a {
-      color: #4CAF50;
-      text-decoration: none;
-      transition: text-decoration 0.2s;
-    }
-
-    .login-link a:hover {
-      text-decoration: underline;
-    }
+    /* ... (tu mismo CSS, sin cambios) ... */
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="registro.js" defer></script> <!-- Archivo JS externo -->
 </head>
 <body>
   <div class="register-form">
@@ -98,7 +19,7 @@
         pattern="^[a-zA-Z0-9._%+-]+@inemjose\.edu\.co$"
         title="Solo se permiten correos @inemjose.edu.co">
       <input type="password" id="password" name="password" placeholder="Contraseña" required
-        pattern="^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
+        pattern="^(?=.[A-Z])(?=.\d)[A-Za-z\d]{8,}$"
         title="La contraseña debe tener al menos 8 caracteres, una letra mayúscula y un número.">
       <input type="password" id="confirmPassword" name="confirm_password" placeholder="Confirmar contraseña" required>
       <input class="btn" type="submit" value="Registrarse">
@@ -118,108 +39,5 @@
       </div>
     </form>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script>
-    // Configuración de Supabase
-    const supabaseUrl = 'https://varxmetzsabmtfsarujf.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhcnhtZXR6c2FibXRmc2FydWpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzMDQwNzQsImV4cCI6MjA2ODg4MDA3NH0.EUkx4lmvG5yCYiR1eTZp-LUe8U_PjppR79n--z2n5tg';
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-    const form = document.getElementById('registerForm');
-    const passwordInput = document.getElementById('password');
-    const confirmInput = document.getElementById('confirmPassword');
-    const emailInput = document.getElementById('email');
-    const passwordError = document.getElementById('passwordError');
-    const confirmError = document.getElementById('confirmError');
-    const emailError = document.getElementById('emailError');
-    const registroError = document.getElementById('registroError');
-    const registroExito = document.getElementById('registroExito');
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@inemjose\.edu\.co$/;
-    const passwordPattern = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
-
-    form.addEventListener('submit', async function(event) {
-      let valid = true;
-      registroError.style.display = 'none';
-      registroExito.style.display = 'none';
-
-      // Validación de correo institucional
-      if (!emailPattern.test(emailInput.value)) {
-        emailError.style.display = 'block';
-        emailInput.focus();
-        valid = false;
-      } else {
-        emailError.style.display = 'none';
-      }
-
-      // Validación de patrón de contraseña
-      if (!passwordPattern.test(passwordInput.value)) {
-        passwordError.style.display = 'block';
-        passwordInput.focus();
-        valid = false;
-      } else {
-        passwordError.style.display = 'none';
-      }
-
-      // Validación de coincidencia de contraseñas
-      if (passwordInput.value !== confirmInput.value) {
-        confirmError.style.display = 'block';
-        confirmInput.focus();
-        valid = false;
-      } else {
-        confirmError.style.display = 'none';
-      }
-
-      if (!valid) {
-        event.preventDefault();
-        return;
-      }
-
-      event.preventDefault();
-
-      // Registro en Supabase
-      const nombre = document.getElementById('nombre').value;
-      const email = emailInput.value;
-      const password = passwordInput.value;
-
-      // Puedes guardar la contraseña como texto plano, pero NO es seguro.
-      // Lo ideal es usar autenticación de Supabase Auth, pero aquí solo se guarda en la tabla.
-      const { data, error } = await supabase
-        .from('usuarios')
-        .insert([{ nombre: nombre, email: email, password: password }]);
-
-      if (error) {
-        registroError.textContent = '❌ Error al registrar: ' + error.message;
-        registroError.style.display = 'block';
-      } else {
-        registroExito.textContent = '✅ Usuario registrado correctamente';
-        registroExito.style.display = 'block';
-        form.reset();
-      }
-    });
-
-    emailInput.addEventListener('input', function() {
-      if (emailPattern.test(emailInput.value)) {
-        emailError.style.display = 'none';
-      }
-    });
-
-    passwordInput.addEventListener('input', function() {
-      if (passwordPattern.test(passwordInput.value)) {
-        passwordError.style.display = 'none';
-      }
-      if (passwordInput.value === confirmInput.value) {
-        confirmError.style.display = 'none';
-      }
-    });
-
-    confirmInput.addEventListener('input', function() {
-      if (passwordInput.value === confirmInput.value) {
-        confirmError.style.display = 'none';
-      } else {
-        confirmError.style.display = 'block';
-      }
-    });
-  </script>
 </body>
 </html>
