@@ -92,8 +92,8 @@
 <body>
   <div class="register-form">
     <h1>Registro</h1>
-    <form id="registerForm" action="procesar_registro.php" method="POST" autocomplete="off">
-      <input type="text" name="nombre" placeholder="Usuario" required>
+    <form id="registerForm" autocomplete="off">
+      <input type="text" id="nombre" name="nombre" placeholder="Usuario" required>
       <input type="email" id="email" name="email" placeholder="Correo electrónico" required
         pattern="^[a-zA-Z0-9._%+-]+@inemjose\.edu\.co$"
         title="Solo se permiten correos @inemjose.edu.co">
@@ -111,13 +111,21 @@
       <div id="emailError" class="error-message">
         El correo electrónico debe pertenecer al dominio inemjose.edu.co.
       </div>
+      <div id="registroError" class="error-message"></div>
+      <div id="registroExito" style="display:none;color:#4CAF50;background:#002a00;padding:10px;border-radius:5px;margin-top:10px;text-align:center;font-size:15px;"></div>
       <div class="login-link">
         ¿Ya tienes una cuenta? <a href="sesion.html">Iniciar sesión</a>
       </div>
     </form>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    // Configuración de Supabase
+    const SUPABASE_URL = 'https://varxmetzsabmtfsarujf.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhcnhtZXR6c2FibXRmc2FydWpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzMDQwNzQsImV4cCI6MjA2ODg4MDA3NH0.EUkx4lmvG5yCYiR1eTZp-LUe8U_PjppR79n--z2n5tg';
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     const form = document.getElementById('registerForm');
     const passwordInput = document.getElementById('password');
     const confirmInput = document.getElementById('confirmPassword');
@@ -125,11 +133,15 @@
     const passwordError = document.getElementById('passwordError');
     const confirmError = document.getElementById('confirmError');
     const emailError = document.getElementById('emailError');
+    const registroError = document.getElementById('registroError');
+    const registroExito = document.getElementById('registroExito');
     const emailPattern = /^[a-zA-Z0-9._%+-]+@inemjose\.edu\.co$/;
     const passwordPattern = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
-    form.addEventListener('submit', function(event) {
+    form.addEventListener('submit', async function(event) {
       let valid = true;
+      registroError.style.display = 'none';
+      registroExito.style.display = 'none';
 
       // Validación de correo institucional
       if (!emailPattern.test(emailInput.value)) {
@@ -160,6 +172,29 @@
 
       if (!valid) {
         event.preventDefault();
+        return;
+      }
+
+      event.preventDefault();
+
+      // Registro en Supabase
+      const nombre = document.getElementById('nombre').value;
+      const email = emailInput.value;
+      const password = passwordInput.value;
+
+      // Puedes guardar la contraseña como texto plano, pero NO es seguro.
+      // Lo ideal es usar autenticación de Supabase Auth, pero aquí solo se guarda en la tabla.
+      const { data, error } = await supabase
+        .from('usuarios')
+        .insert([{ nombre: nombre, email: email, password: password }]);
+
+      if (error) {
+        registroError.textContent = '❌ Error al registrar: ' + error.message;
+        registroError.style.display = 'block';
+      } else {
+        registroExito.textContent = '✅ Usuario registrado correctamente';
+        registroExito.style.display = 'block';
+        form.reset();
       }
     });
 
