@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contactanos</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding-top: 40px;
+  }
+
+  .contact_form {
+    background-color: #1a1a1a;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #333;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  h1, h3 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  form p {
+    margin-bottom: 15px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #333;
+    color: white;
+  }
+
+  textarea {
+    height: 100px;
+    resize: none;
+  }
+
+  #button,
+  #volver {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  #button:hover,
+  #volver:hover {
+    background-color: #45a049;
+  }
+
+  .aviso {
+    font-size: 0.9em;
+    margin-top: 15px;
+    text-align: center;
+  }
+
+  .obligatorio {
+    color: red;
+  }
+</style>
+
+</head>
+<body>
+
+<div class="contact_form">
+  <div class="formulario">      
+    <h1>Formulario de contacto</h1>
+    <h3>Escríbenos y en breve los pondremos en contacto contigo</h3>
+    <form id="form">
+      <p>
+        <label for="nombre" class="colocar_nombre">Nombre
+          <span class="obligatorio">*</span>
+        </label>
+        <input type="text" name="nombre" id="nombre" required="obligatorio" placeholder="Escribe tu nombre">
+      </p>
+    
+      <p>
+        <label for="email" class="colocar_email">Email
+          <span class="obligatorio">*</span>
+        </label>
+        <input type="email" name="email" id="email" required="obligatorio" placeholder="Escribe tu Email">
+      </p>
+  
+      <p>
+        <label for="telefono" class="colocar_telefono">Teléfono</label>
+        <input type="tel" name="telefono" id="telefono" placeholder="Escribe tu teléfono">
+      </p>    
+     
+      <p>
+        <label for="asunto" class="colocar_asunto">Asunto
+          <span class="obligatorio">*</span>
+        </label>
+        <input type="text" name="asunto" id="asunto" required="obligatorio" placeholder="Escribe un asunto">
+      </p>    
+    
+      <p>
+        <label for="mensaje" class="colocar_mensaje">Mensaje
+          <span class="obligatorio">*</span>
+        </label>                     
+        <textarea name="mensaje" class="texto_mensaje" id="mensaje" required="obligatorio" placeholder="Deja aquí tu comentario..."></textarea> 
+      </p>                    
+      
+      <input type="submit" id="button" value="Send Email">
+      <button id="volver" onclick="window.location.href='Idea1.html'; return false;">Volver</button>
+
+      <p class="aviso">
+        <span class="obligatorio"> * </span>los campos son obligatorios.
+      </p>          
+    </form>
+  </div>  
+</div>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script type="text/javascript">
+  emailjs.init('sOVYxJhb8VlrQYt71')
+</script>
+
+<script> 
+  const btn = document.getElementById('button');
+
+  document.getElementById('form')
+  .addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    btn.value = 'Enviando...';
+
+    const serviceID = 'default_service';
+    const templateID = 'template_zc9atnr';
+
+    emailjs.sendForm(serviceID, templateID, this)
+      .then(() => {
+        btn.value = 'Send Email';
+        alert('Correo enviado con éxito');
+      }, (err) => {
+        btn.value = 'Send Email';
+        alert(JSON.stringify(err));
+      });
+  });
+</script>
+
+</body>
+</html>
