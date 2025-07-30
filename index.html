@@ -74,46 +74,5 @@
       text-decoration: underline;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    // Reemplaza con tus datos reales
-    const supabase = supabase.createClient(
-      'https://varxmetzsabmtfsarujf.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhcnhtZXR6c2FibXRmc2FydWpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzMDQwNzQsImV4cCI6MjA2ODg4MDA3NH0.EUkx4lmvG5yCYiR1eTZp-LUe8U_PjppR79n--z2n5tg'
-    );
-
-    async function getUsers() {
-      let { data, error } = await supabase.from('usuarios').select('*');
-      if (error) {
-        console.error('Error al obtener usuarios:', error);
-      } else {
-        console.log('Usuarios:', data);
-      }
-    }
-
-    getUsers();
-  </script>
-  <script defer src="registro.js"></script>
-</head>
-<body>
-  <div class="register-form">
-    <h1>Registro</h1>
-    <form id="registerForm" autocomplete="off">
-      <input type="text" id="nombre" name="nombre" placeholder="Usuario" required>
-      <input type="email" id="email" name="email" placeholder="Correo electrónico" required>
-      <input type="password" id="password" name="password" placeholder="Contraseña" required>
-      <input type="password" id="confirmPassword" name="confirm_password" placeholder="Confirmar contraseña" required>
-
-      <input class="btn" type="submit" value="Registrarse">
-
-      <div id="confirmError" class="error-message">Las contraseñas no coinciden.</div>
-      <div id="registroError" class="error-message"></div>
-      <div id="registroExito" style="display:none;color:#4CAF50;background:#002a00;padding:10px;border-radius:5px;margin-top:10px;text-align:center;font-size:15px;"></div>
-
-      <div class="login-link">
-        ¿Ya tienes una cuenta? <a href="sesion.html">Iniciar sesión</a>
-      </div>
-    </form>
-  </div>
 </body>
 </html>
