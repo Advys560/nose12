@@ -1,56 +1,11 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registro de Usuarios</title>
-  <style>
-    body { font-family: Arial; background: #f0f0f0; padding: 20px; }
-    form { background: white; padding: 20px; border-radius: 8px; width: 300px; margin: auto; box-shadow: 0 0 10px #ccc; }
-    input, button { width: 100%; padding: 10px; margin: 8px 0; border-radius: 4px; border: 1px solid #ccc; }
-    button { background-color: #007BFF; color: white; border: none; cursor: pointer; }
-    button:hover { background-color: #0056b3; }
-  </style>
-</head>
-<body>
+<script src="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhcnhtZXR6c2FibXRmc2FydWpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzMDQwNzQsImV4cCI6MjA2ODg4MDA3NH0.EUkx4lmvG5yCYiR1eTZp-LUe8U_PjppR79n--z2n5tg"></script>
+<script>
+  const supabase = supabase.createClient('https://varxmetzsabmtfsarujf.supabase.co', 'TU_API_KEY');
 
-  <h2 style="text-align: center;">Formulario de Registro</h2>
+  async function getUsers() {
+    let { data, error } = await supabase.from('usuarios').select('*');
+    console.log(data);
+  }
 
-  <form id="registroForm">
-    <input type="text" id="nombre" placeholder="Nombre" required />
-    <input type="email" id="correo" placeholder="Correo electrónico" required />
-    <button type="submit">Registrar</button>
-  </form>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    // Usa tus datos reales de Supabase aquí
-    const SUPABASE_URL = 'https://varxmetzsabmtfsarujf.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhcnhtZXR6c2FibXRmc2FydWpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzMDQwNzQsImV4cCI6MjA2ODg4MDA3NH0.EUkx4lmvG5yCYiR1eTZp-LUe8U_PjppR79n--z2n5tg';
-
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    const form = document.getElementById('registroForm');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const nombre = document.getElementById('nombre').value;
-      const correo = document.getElementById('correo').value;
-
-      const { data, error } = await supabase
-        .from('usuarios') // nombre de tu tabla
-        .insert([{ nombre: nombre, correo: correo }]);
-
-      if (error) {
-        alert('❌ Error al registrar: ' + error.message);
-        console.error(error);
-      } else {
-        alert('✅ Usuario registrado correctamente');
-        form.reset();
-      }
-    });
-  </script>
-
-</body>
-</html>
+  getUsers();
+</script>
